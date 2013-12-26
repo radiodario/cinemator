@@ -4,7 +4,15 @@ body {
   background-color: rgba(240,242,212, 0.4);
 }
 
-
+header {
+  margin: 20px auto;
+  margin-bottom: -60px;
+  width: 595px;
+  color: #333;
+  opacity: 0.25;
+  font-size: 2em;
+  font-weight: bold;
+}
 
 .typewriter {
   margin: 100px auto;
