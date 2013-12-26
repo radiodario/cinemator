@@ -30,27 +30,7 @@ define([], function () {
     'text':'sceneheading'
   };
 
-  // add event handler for all parts when we begin
-  /* function setupParts() {
-    var parts = typewriter.querySelectorAll('p');
-    var i;
-    for (i = 0; i < parts.length; i++) {
-      setupPart(parts[i]);
-    }
-  } */
-
-  //setupParts();
-
-
-
-  function setupPart(part) {
-    part.addEventListener('keydown', tabHandler);
-    part.contentEditable=true;
-    part.hidefocus=true;
-  }
-
-  function getCurrentElement() {
-     console.log(document.getSelection().anchorNode.parentNode.tagName);
+  function getCurrentSelectionElement() {
     return document.getSelection().anchorNode.parentNode
   }
 
@@ -59,7 +39,6 @@ define([], function () {
 
   function tabHandler(e) {
 
-    
     // handle the tab
     if (e.keyCode == 9) {
       e.preventDefault();
@@ -68,19 +47,26 @@ define([], function () {
     
     // add a new part on enter
     if ((e.keyCode == 13) && (!e.shiftKey)) {
-      
+      e.preventDefault();
       var s = document.getSelection();
-      console.log(s, s.extentOffset, s.anchorNode.length)
       var endofline = s.extentOffset == s.anchorNode.length;
       if (endofline) {
-        e.preventDefault();
         return addPart(e);
+      } else {
+        s.modify('move', 'forward', 'line')
       }
+
     }
     
     // delete if it's empty
     if (e.keyCode == 8) {
-      if (e.target.innerHTML === '') {
+      var ce = getCurrentSelectionElement();
+      console.log(ce.innerHTML)
+      // we reached the end of the current node
+      // so it places us on the div, altough we havent
+      // removed the "P" yet
+      if (ce === typewriter) {
+        e.preventDefault();
         deletePart(e);
       }
     } 
@@ -88,55 +74,90 @@ define([], function () {
 
   // adds a new part to the script
   function addPart(e) {
-    console.log("adding a new type");
     // add a new para with right class type
     var newPart = document.createElement('p');
+    // we need to add this space otherwise we can't focus onto it
+    newPart.innerHTML = '&nbsp;';
     // this assumes the p only has one class
-    var currentType = e.target.className;
+    var currentNode = getCurrentSelectionElement()
+    var currentType = currentNode.className;
     // give it the most useful next part
     newPart.classList.add(nextParts[currentType]);
     // add it to the paper
     typewriter.appendChild(newPart);
-    setupPart(newPart);
-    newPart.focus();
+    // move the selection to it
+    moveSelectionTo(newPart);
   }
 
   // delete the part {
   function deletePart(e) {
-    var ps = e.target.previousSibling;
+    // the anchor node is the current P
+    var currentNode = window.getSelection().anchorNode;
+    // get the previous guy
+    
+    //debugger;
+    var ps = currentNode.previousSibling;
     if (ps === null) return;
     // check that we have a 'P' before otherwise don't remove
+    // we got to the 'P'
     if (ps.tagName == 'P') {
-      ps.focus();
-      e.target.remove();
+      // so delete the original node
+      currentNode.remove();
+      // and send us to the previous sibling
+      moveSelectionToEnd(ps);
     } else {
       ps.remove();
       deletePart(e);
     }
   }
 
+
+
   // cycle through the types
   function cycleType(event) {
     var i, partType, newPartType;
     // go over the types
-    var part = getCurrentElement();
+    var part = getCurrentSelectionElement();
+
     for (i = 0; i < scriptParts.length; i++) {
       partType = scriptParts[i];
       // if this is the type
       if (part.classList.contains(partType)) {
-        console.log(i, scriptParts[i]);
         // remove the part type
         part.classList.remove(partType);
         // and make it the next one in the list;
-        // wrapping around
-        // to do, wrap backwards
-        newPartType = scriptParts[(i + 1) % scriptParts.length];
+        if (event.shiftKey) {
+          newPartType = scriptParts[(i - 1) >= 0 ? i - 1 : scriptParts.length-1 ]
+        } else {
+          newPartType = scriptParts[(i + 1) % scriptParts.length];
+        }
+        console.log(newPartType)
         return part.classList.add(newPartType);
         // and get out of the loop
       }      
     }
     
+  }
 
+  // moves the selection to an element and selects the whole thing
+  function moveSelectionTo(element) {
+    // move the pointer to it
+    var range = document.createRange(); //Create a range (a range is a like the selection but invisible)
+    range.selectNode(element);
+    var selection = window.getSelection();//get the selection object (allows you to change selection)
+    selection.removeAllRanges();//remove any selections already made
+    selection.addRange(range);//make the range you have just created the visible selection
+  }
+
+  // moves the selection to the end of a node
+  function moveSelectionToEnd(element) {
+    // move the pointer to it
+    var range = document.createRange(); //Create a range (a range is a like the selection but invisible)
+    range.selectNode(element);
+    range.collapse();
+    var selection = window.getSelection();//get the selection object (allows you to change selection)
+    selection.removeAllRanges();//remove any selections already made
+    selection.addRange(range);//make the range you have just created the visible selection
   }
 
 });

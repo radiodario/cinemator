@@ -15,7 +15,7 @@ body {
   height: 895px;
   padding: 100px;
   background-color: white;
-
+  outline: none;
 }
 
 p {
@@ -30,10 +30,12 @@ p {
 .character {
   margin-left: 200px;
   text-transform: uppercase;
+  margin-bottom: 0px;
 } 
 
 
 .dialog {
+  margin-top: 0px;
   margin-left: 120px;
   margin-right: 160px;
 }
