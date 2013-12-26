@@ -2,7 +2,7 @@
 define([], function () {
   'use strict';
 
-  // the typewritter container
+  // the typewriter container
   var typewriter = document.querySelector('.typewriter');
 
   // the types of things that we can edit
@@ -39,6 +39,15 @@ define([], function () {
 
   function tabHandler(e) {
 
+    // console.log(e.keyCode, e)
+
+    // save 30 seconds after we stop typing
+    // i.e. set a timeout for saving 2 seconds
+    // after we stop typing, but clear it otherwise
+    if (window.saveTimeout) clearTimeout(window.saveTimeout);
+    window.saveTimeout = setTimeout(saveScript, 2000);
+
+
     // handle the tab
     if (e.keyCode == 9) {
       e.preventDefault();
@@ -61,7 +70,6 @@ define([], function () {
     // delete if it's empty
     if (e.keyCode == 8) {
       var ce = getCurrentSelectionElement();
-      console.log(ce.innerHTML)
       // we reached the end of the current node
       // so it places us on the div, altough we havent
       // removed the "P" yet
@@ -69,7 +77,12 @@ define([], function () {
         e.preventDefault();
         deletePart(e);
       }
-    } 
+    }
+
+    // save the script if we press cmd + s 
+    // if (e.keyCode == )
+
+
   }
 
   // adds a new part to the script
@@ -111,8 +124,6 @@ define([], function () {
     }
   }
 
-
-
   // cycle through the types
   function cycleType(event) {
     var i, partType, newPartType;
@@ -131,9 +142,11 @@ define([], function () {
         } else {
           newPartType = scriptParts[(i + 1) % scriptParts.length];
         }
+        // we have to notify somehow the user that this is the 
+        // new part type
         console.log(newPartType)
-        return part.classList.add(newPartType);
         // and get out of the loop
+        return part.classList.add(newPartType);
       }      
     }
     
@@ -159,5 +172,72 @@ define([], function () {
     selection.removeAllRanges();//remove any selections already made
     selection.addRange(range);//make the range you have just created the visible selection
   }
+
+  function saveScript() {
+    var parts = typewriter.querySelectorAll('p');
+    var i, partNode, part;
+
+    var script = {
+      parts : [],
+      characters: {}
+    };
+    
+    for (i = 0; i < parts.length; i++) {
+      partNode = parts[i];
+      part = {
+        type : partNode.className,
+        text : partNode.innerHTML
+      }
+      script.parts.push(part)
+    }
+
+    // store on local storage
+    if (Modernizr.localstorage) {
+      localStorage["cinemator.script"] = JSON.stringify(script);
+    } else {
+      console.log("there is no localstorage, couldn't save");
+    }
+    
+
+    console.log('saved!')
+    return script;
+
+  }
+
+  function loadScript() {
+    var script;
+    if (Modernizr.localstorage) {
+      script = JSON.parse(localStorage["cinemator.script"]);
+    }
+    
+    if (!script.hasOwnProperty('parts')) {
+      return;
+    }
+
+    // clear contents
+    typewriter.innerHTML = '';
+
+    var i, partNode, part;
+    for (i = 0; i < script.parts.length; i++) {
+      part = script.parts[i];
+      partNode = document.createElement('p');
+      partNode.innerHTML = part.text;
+      partNode.classList.add(part.type);
+      typewriter.appendChild(partNode);
+    }
+
+    return script;
+
+  }
+
+  window.saveScript = saveScript;
+  window.loadScript = loadScript;
+
+
+  // listen to close and save the script
+  window.addEventListener('unload', saveScript);
+
+  // load and see if we have something in localStorage
+  return loadScript();
 
 });
