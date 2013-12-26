@@ -250,7 +250,6 @@ module.exports = function (grunt) {
             }
         },
         // Put files not handled in other tasks here
-
         copy: {
             dist: {
                 files: [{
@@ -357,13 +356,12 @@ module.exports = function (grunt) {
         'concat',
         'cssmin',
         'uglify',
-        'modernizr',
+        // 'modernizr',
         'copy:dist',
         'rev',
-        'usemin'
+        'usemin',
+        'copy:heroku'
     ]);
-
-    grunt.registerTask('deploy', ['build', 'copy:heroku'])
 
     grunt.registerTask('default', [
         'jshint',
