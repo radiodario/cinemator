@@ -250,6 +250,7 @@ module.exports = function (grunt) {
             }
         },
         // Put files not handled in other tasks here
+
         copy: {
             dist: {
                 files: [{
@@ -272,6 +273,21 @@ module.exports = function (grunt) {
                 cwd: '<%= yeoman.app %>/styles',
                 dest: '.tmp/styles/',
                 src: '{,*/}*.css'
+            },
+            heroku: {
+                files : [{
+                    expand: true,
+                    dest: '<%= yeoman.dist %>',
+                    cwd: 'heroku',
+                    src: '*',
+                    rename: function (dest, src) {
+                        var path = require('path');
+                        if (src === 'distpackage.json') {
+                            return path.join(dest, 'package.json');
+                        }
+                        return path.join(dest, src);
+                    }
+                }]
             }
         },
         modernizr: {
@@ -346,6 +362,8 @@ module.exports = function (grunt) {
         'rev',
         'usemin'
     ]);
+
+    grunt.registerTask('deploy', ['build', 'copy:heroku'])
 
     grunt.registerTask('default', [
         'jshint',
