@@ -1,0 +1,65 @@
+body {
+  font-family: Courier New, courier, fixed-width;
+  font-size: 12pt;
+  background-color: rgba(240,242,212, 0.4);
+}
+
+
+
+.typewriter {
+  margin: 100px auto;
+  width: 595px;
+  -webkit-box-shadow: 0px -4px 20px rgba(50, 50, 50, 0.25);
+    -moz-box-shadow:  0px -4px 20px rgba(50, 50, 50, 0.25);
+    box-shadow:       0px -4px 20px rgba(50, 50, 50, 0.25);
+  height: 895px;
+  padding: 100px;
+  background-color: white;
+
+}
+
+p {
+  outline: none;
+}
+
+.typewritter :last-child {
+  margin-bottom: 200px;
+}
+
+
+.character {
+  margin-left: 200px;
+  text-transform: uppercase;
+} 
+
+
+.dialog {
+  margin-left: 120px;
+  margin-right: 160px;
+}
+
+.parenthetical:after {
+  content: ")"
+}
+
+.parenthetical:before {
+  content: "("
+}
+
+.transition {
+  text-align: right;
+  text-transform: uppercase;
+}
+
+
+.shot {
+  text-transform: uppercase;
+}
+
+.action {
+}
+
+.sceneheading {
+  font-weight: bold;
+  text-transform: uppercase;
+}
