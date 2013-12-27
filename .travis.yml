@@ -2,10 +2,14 @@ language: node_js
 node_js:
   - "0.8"
 
+before_deploy: 
+  - "git subtree split --prefix=dist -b dist"
+
 deploy:
   provider: heroku
   app: infinite-reaches-9535
+  skip_cleanup: true
   api_key:
     secure: bUIBV6XLw/uFp7dfzXijHBM8OGFdu6wSDrHXczbimJNwziO3+opwOr7UOpMRFax6JgtVCTi7dKy9lnU7/i4FY+jWtzRwxYwEs5o01nqxA3Uaf9GwTesnrt8+OXAaoBQwozbKHVh82NACOndXYZVstKB6fgUg1oJTn0uVdE7bQcA=
   on: 
-    branch: master
+    branch: dist:master
