@@ -265,13 +265,30 @@ define(['jquery', 'backbone', 'templates', 'localstorage'], function ($, Backbon
       // this assumes the p only has one class
       var currentNode = this.getCurrentSelectionElement()
       var currentType = currentNode.className;
+      var newPartType = nextParts[currentType];
+
       // give it the most useful next part
-      newPart.classList.add(nextParts[currentType]);
+      newPart.classList.add(newPartType);
       // add it to the paper after the current element
       // even if it's null;
       this.el.insertBefore(newPart, currentNode.nextSibling);
       // move the selection to it
       this.moveSelectionTo(newPart);
+
+      var p = this.$(newPart);
+      var pos = p.offset();
+      pos.top += p.height();
+
+      if (newPartType === 'transition')
+        pos.left = pos.left + (p.width() - 150)
+
+      var notification = {
+        text : newPartType,
+        pos : pos
+      }
+
+      return Backbone.trigger('notification', notification);
+
     },
 
     // delete a part from the script
@@ -293,7 +310,7 @@ define(['jquery', 'backbone', 'templates', 'localstorage'], function ($, Backbon
         this.moveSelectionToEnd(ps);
       } else {
         ps.remove();
-        deletePart(e);
+        this.deletePart(e);
       }
     },
 
