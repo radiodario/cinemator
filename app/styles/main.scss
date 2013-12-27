@@ -48,6 +48,13 @@ p {
   margin-right: 160px;
 }
 
+.parenthetical {
+  margin-top: 0px;
+  margin-bottom: 0px;
+  margin-left: 180px;
+  margin-right: 180px;
+}
+
 .parenthetical:after {
   content: ")"
 }
@@ -61,12 +68,12 @@ p {
   text-transform: uppercase;
 }
 
-
 .shot {
   text-transform: uppercase;
 }
 
 .action {
+
 }
 
 .sceneheading {
