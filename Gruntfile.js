@@ -27,6 +27,12 @@ module.exports = function (grunt) {
             styles: {
                 files: ['<%= yeoman.app %>/styles/{,*/}*.css'],
                 tasks: ['copy:styles', 'autoprefixer']
+            },            
+            jst: {
+                files: [
+                    '<%= yeoman.app %>/scripts/templates/*.ejs'
+                ],
+                tasks: ['jst']
             },
             livereload: {
                 options: {
@@ -143,6 +149,16 @@ module.exports = function (grunt) {
                 }]
             }
         },
+        jst: {
+            options: {
+                amd: true
+            },
+            compile: {
+                files: {
+                    '.tmp/scripts/templates.js': ['<%= yeoman.app %>/scripts/templates/*.ejs']
+                }
+            }
+        },
         // not used since Uglify task does concat,
         // but still available if needed
         /*concat: {
@@ -155,6 +171,9 @@ module.exports = function (grunt) {
                     // `name` and `out` is set by grunt-usemin
                     baseUrl: '<%= yeoman.app %>/scripts',
                     optimize: 'none',
+                    paths: {
+                        'templates': '../../.tmp/scripts/templates'
+                    },
                     // TODO: Figure out how to make sourcemaps work with grunt-usemin
                     // https://github.com/yeoman/grunt-usemin/issues/30
                     //generateSourceMaps: true,
@@ -324,6 +343,10 @@ module.exports = function (grunt) {
             }
         }
     });
+    
+    grunt.registerTask('createDefaultTemplate', function () {
+        grunt.file.write('.tmp/scripts/templates.js', 'this.JST = this.JST || {};');
+    });
 
     grunt.registerTask('server', function (target) {
         if (target === 'dist') {
@@ -332,6 +355,8 @@ module.exports = function (grunt) {
 
         grunt.task.run([
             'clean:server',
+            'createDefaultTemplate',
+            'jst',
             'concurrent:server',
             'autoprefixer',
             'connect:livereload',
@@ -341,6 +366,8 @@ module.exports = function (grunt) {
 
     grunt.registerTask('test', [
         'clean:server',
+        'createDefaultTemplate',
+        'jst',
         'concurrent:test',
         'autoprefixer',
         'connect:test',
@@ -349,7 +376,9 @@ module.exports = function (grunt) {
 
     grunt.registerTask('build', [
         'clean:dist',
+        'createDefaultTemplate',
         'useminPrepare',
+        'jst',
         'concurrent:dist',
         'autoprefixer',
         'requirejs',
