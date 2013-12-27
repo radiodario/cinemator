@@ -1,3 +1,7 @@
+language: node_js
+node_js:
+  - "0.8"
+
 deploy:
   provider: heroku
   app: infinite-reaches-9535
