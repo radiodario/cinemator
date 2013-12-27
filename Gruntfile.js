@@ -27,6 +27,12 @@ module.exports = function (grunt) {
             styles: {
                 files: ['<%= yeoman.app %>/styles/{,*/}*.css'],
                 tasks: ['copy:styles', 'autoprefixer']
+            },            
+            jst: {
+                files: [
+                    '<%= yeoman.app %>/scripts/templates/*.ejs'
+                ],
+                tasks: ['jst']
             },
             livereload: {
                 options: {
@@ -141,6 +147,16 @@ module.exports = function (grunt) {
                     src: '{,*/}*.css',
                     dest: '.tmp/styles/'
                 }]
+            }
+        },
+        jst: {
+            options: {
+                amd: true
+            },
+            compile: {
+                files: {
+                    '.tmp/scripts/templates.js': ['<%= yeoman.app %>/scripts/templates/*.ejs']
+                }
             }
         },
         // not used since Uglify task does concat,
@@ -324,6 +340,10 @@ module.exports = function (grunt) {
             }
         }
     });
+    
+    grunt.registerTask('createDefaultTemplate', function () {
+        grunt.file.write('.tmp/scripts/templates.js', 'this.JST = this.JST || {};');
+    });
 
     grunt.registerTask('server', function (target) {
         if (target === 'dist') {
@@ -332,6 +352,8 @@ module.exports = function (grunt) {
 
         grunt.task.run([
             'clean:server',
+            'createDefaultTemplate',
+            'jst',
             'concurrent:server',
             'autoprefixer',
             'connect:livereload',
@@ -341,6 +363,8 @@ module.exports = function (grunt) {
 
     grunt.registerTask('test', [
         'clean:server',
+        'createDefaultTemplate',
+        'jst',
         'concurrent:test',
         'autoprefixer',
         'connect:test',
@@ -350,6 +374,8 @@ module.exports = function (grunt) {
     grunt.registerTask('build', [
         'clean:dist',
         'useminPrepare',
+        'createDefaultTemplate',
+        'jst',
         'concurrent:dist',
         'autoprefixer',
         'requirejs',
