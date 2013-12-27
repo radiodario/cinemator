@@ -92,6 +92,7 @@ define(['jquery', 'backbone', 'templates', 'localstorage'], function ($, Backbon
       // data representation.
       for (i = 0; i < partNodes.length; i++) {
         partNode = partNodes[i];
+        // we can probably get rid of this?
         part = {
           type : partNode.className,
           text : partNode.innerHTML
@@ -101,10 +102,12 @@ define(['jquery', 'backbone', 'templates', 'localstorage'], function ($, Backbon
 
         // keep counts on character usage, which we'll
         // use to suggest things
-        if (data.characters.hasOwnProperty(part.type)) {
-          data.characters[part.type]++;
-        } else {
-          data.characters[part.type] = 1;
+        if (part === 'character') {
+          if (data.characters.hasOwnProperty(part.text)) {
+            data.characters[part.text]++;
+          } else {
+            data.characters[part.text] = 1;
+          }
         }
 
 
