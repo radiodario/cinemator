@@ -18,5 +18,5 @@ require(['app', 'jquery'], function (cinemator, $) {
     
     // use app here
     cinemator.init();
-
+    
 });

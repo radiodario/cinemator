@@ -36,7 +36,16 @@ define(['jquery', 'backbone', 'templates', 'localstorage'], function ($, Backbon
         text : 'fade from black'
       }],
       characters: {}
+    },
+
+    initialize : function() {
+      this.on('sync', this.notify, this);
+    },
+
+    notify : function() {
+      Backbone.trigger('notification', 'Saved!')
     }
+
   });
 
   // The collection
@@ -68,7 +77,6 @@ define(['jquery', 'backbone', 'templates', 'localstorage'], function ($, Backbon
     // be done inside the model, or in a more clever 
     // way but so far it should work fine
     saveScript : function() {
-      
       // let's use Javascript rather than fucking jquery
       // for speed ok?
       var partNodes = this.el.querySelectorAll('p');
@@ -228,7 +236,20 @@ define(['jquery', 'backbone', 'templates', 'localstorage'], function ($, Backbon
           // we have to notify somehow the user that this is the 
           // new part type
           // and get out of the loop
-          return Backbone.trigger('changedType', part);
+          var p = this.$(part);
+
+          var pos = p.offset();
+          pos.top += p.height();
+
+          if (newPartType === 'transition')
+            pos.left = pos.left + (p.width() - 150)
+
+          var notification = {
+            text : newPartType,
+            pos : pos
+          }
+
+          return Backbone.trigger('notification', notification);
         }      
       }
 

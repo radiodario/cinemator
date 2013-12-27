@@ -1,5 +1,5 @@
 /*global define */
-define(['backbone', 'modules/script', 'router'], function (Backbone, Script, Router) {
+define(['backbone', 'modules/script', 'modules/notification', 'router'], function (Backbone, Script, Notification, Router) {
   'use strict';
 
   var cinemator = {
@@ -10,11 +10,16 @@ define(['backbone', 'modules/script', 'router'], function (Backbone, Script, Rou
 
       this.router = new Router({collection: this.scripts});
 
+      this.notification = new Notification();
+
       this.scripts.fetch().done(function() {
         Backbone.history.start();
+        Backbone.trigger('notification', 'Welcome to cinemator!')
       });
 
       Backbone.on('savedModel', this.setUrl, this);
+
+
 
     }, 
 
