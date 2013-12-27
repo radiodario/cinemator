@@ -23,7 +23,7 @@ define([], function () {
     'sceneheading' : 'action',
     'character' : 'dialog',
     'dialog' : 'character',
-    'parenthetical' : 'sceneheading',
+    'parenthetical' : 'dialog',
     'transition' : 'sceneheading',
     'action':'character',
     'shot': 'action',
