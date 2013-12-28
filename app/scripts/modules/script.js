@@ -111,7 +111,7 @@ define(['jquery', 'backbone', 'templates', 'localstorage'], function ($, Backbon
 
         // keep counts on character usage, which we'll
         // use to suggest things
-        if (part === 'character') {
+        if ((part.type === 'character') && (part.text !== '&nbsp;')) {
           if (data.characters.hasOwnProperty(part.text)) {
             data.characters[part.text]++;
           } else {
@@ -150,6 +150,7 @@ define(['jquery', 'backbone', 'templates', 'localstorage'], function ($, Backbon
           this.handleDelete(e);
           break;
         default:
+          this.checkCharacter(e);
           break;
       }
 
@@ -171,6 +172,11 @@ define(['jquery', 'backbone', 'templates', 'localstorage'], function ($, Backbon
       // shiftKey pressed
       if (e.shiftKey) 
         return;
+
+      if (this.candidate) {
+        var cs = this.getCurrentSelectionElement();
+        cs.innerHTML = this.candidate;
+      }
       
       // prevent the default otherwise
       e.preventDefault();
@@ -325,6 +331,38 @@ define(['jquery', 'backbone', 'templates', 'localstorage'], function ($, Backbon
       
     },
 
+    // checks if it is a character
+    checkCharacter: function(e) {
+      var cs = this.getCurrentSelectionElement();
+      this.candidate = false;
+      if (!cs.classList.contains('character')) {
+        return
+      } else {
+        var typed = cs.innerHTML;
+        var characters = this.model.get('characters');
+        for (var character in characters) {
+          if (character.indexOf(typed) == 0) {
+            // we have to notify somehow the user that this is the 
+            // new part type
+            // and get out of the loop
+            var p = this.$(cs);
+
+            var pos = p.offset();
+            pos.top += p.height();
+
+            var notification = {
+              text : character,
+              pos : pos
+            }
+
+            this.candidate = character;
+
+            return Backbone.trigger('notification', notification)
+          }
+        }
+        this.candidate.false;
+      }
+    },
 
     // element selection node
     // this might change if we use subviews?
