@@ -352,7 +352,81 @@ define(['jquery', 'backbone', 'templates', 'localstorage'], function ($, Backbon
       selection.addRange(range);//make the range you have just created the visible selection
     }
 
-  })
+  });
+
+  Script.views.ScriptLoader = Backbone.View.extend({
+    template: JST['app/scripts/templates/scriptLoader.ejs'],
+    el: 'div.scriptLoader',
+
+    events: {
+      'click .close' : 'closeLoader',
+      'click .load' : 'show',
+      'click li' : 'loadScript',
+      'click .delete' : 'areyousure',
+      'mouseout .delete.yes' : 'notsure',
+      'click .delete.yes' : 'delete'
+     },
+
+    initialize: function() {
+      this.collection.on('sync', this.render, this);
+    },
+
+    render: function() {
+      this.$el.html(this.template({scripts : this.collection.toJSON()}))
+      if (!this.$el.hasClass('open')) {
+        var loadHeight = this.$('a.load').height();
+        this.$el.css({'top' : -this.$el.height() + (loadHeight*2)})
+      }
+    },
+
+    show: function() {
+      this.$el
+        .css({'top' : -this.$el.height() + this.$('a.load').height()})
+        .animate({'top': 0})
+        .addClass('open')
+      document.body.classList.add('modal-open');
+    },
+
+    closeLoader : function() {
+      document.body.classList.remove('modal-open');
+      var loadHeight = this.$('a.load').height();
+      this.$el.removeClass('open').animate({'top': -this.$el.height() + (loadHeight*2) })
+    },
+
+    loadScript : function(e) {
+      if (e.currentTarget === e.target) {
+        Backbone.history.navigate('#script/' + e.target.id, true);
+        this.closeLoader();
+      }
+    },
+
+    areyousure : function(e) {
+      e.preventDefault();
+      e.currentTarget.innerHTML = 'sure?'
+      e.currentTarget.classList.add('yes');
+    },
+
+    notsure : function(e) {
+      e.currentTarget.innerHTML = '×';
+      e.currentTarget.classList.remove('yes');
+    },
+
+    delete : function(e) {
+      e.preventDefault();
+      var modelId = e.currentTarget.parentNode.id;
+      var toremove = this.collection.findWhere({id : modelId});
+
+      this.$(e.target.parentNode).fadeOut(200, function() {
+        $(this).remove();
+        if (toremove) {
+          toremove.destroy();
+        }
+      });
+  
+    }
+
+
+  });
 
 
 
