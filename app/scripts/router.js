@@ -14,7 +14,6 @@ define(['jquery', 'backbone', 'modules/script'], function ($, Backbone, Script) 
     },
 
     welcome : function() {
-
       // check if you've been here before
       if (!localStorage['cinemator.hereBefore']) {
         $('.welcome').fadeIn(200);
@@ -27,6 +26,9 @@ define(['jquery', 'backbone', 'modules/script'], function ($, Backbone, Script) 
     },
 
     newScript : function() {
+
+      Backbone.trigger('notification', 'loading');
+
       $('.welcome').fadeOut(500);
       $('body').removeClass('modal-open');
       var script = new Script.model();
@@ -36,6 +38,9 @@ define(['jquery', 'backbone', 'modules/script'], function ($, Backbone, Script) 
     },
 
     loadScript: function(id) {
+
+      Backbone.trigger('notification', 'loading');
+
       var script = this.collection.findWhere({id: id});
       var view = new Script.views.Typewriter({model: script});
       view.render();
