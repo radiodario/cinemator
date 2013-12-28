@@ -2,6 +2,7 @@
 
 
 @import "scriptLoader";
+@import "welcome";
 
 body {
   font-family: Courier New, courier, fixed-width;
@@ -49,7 +50,7 @@ header {
   left: 0;
   right: 0;
   margin: 300px;
-  @include border-radius(4px, 4px);
+  // @include border-radius(4px, 4px);
   border: 1px solid #eee;
 }
 
@@ -60,7 +61,7 @@ header {
   width: 140px;
   padding: 5px;
   background-color: rgba(240, 242, 242, 0.8);
-  @include border-radius(4px, 4px);
+  // @include border-radius(4px, 4px);
   border: 1px solid #eee;
 }
 
