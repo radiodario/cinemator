@@ -361,6 +361,7 @@ define(['jquery', 'backbone', 'templates', 'localstorage'], function ($, Backbon
     events: {
       'click .close' : 'closeLoader',
       'click .load' : 'show',
+      'click .new' : 'makeNew',
       'click li' : 'loadScript',
       'click .delete' : 'areyousure',
       'mouseout .delete.yes' : 'notsure',
@@ -385,6 +386,10 @@ define(['jquery', 'backbone', 'templates', 'localstorage'], function ($, Backbon
         .animate({'top': 0})
         .addClass('open')
       document.body.classList.add('modal-open');
+    },
+
+    makeNew: function() {
+      Backbone.history.navigate('', true);
     },
 
     closeLoader : function() {
