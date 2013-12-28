@@ -14,6 +14,8 @@ define(['jquery', 'backbone', 'modules/script'], function ($, Backbone, Script) 
     },
 
     welcome : function() {
+      
+      
       // check if you've been here before
       if (!localStorage['cinemator.hereBefore']) {
         $('.welcome').fadeIn(200);

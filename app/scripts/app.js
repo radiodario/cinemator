@@ -10,10 +10,10 @@ define(['backbone', 'modules/script', 'modules/notification', 'router'], functio
 
       this.router = new Router({collection: this.scripts});
 
-      Backbone.trigger('notification', 'loading');
-
       this.notification = new Notification();
       this.scriptLoader = new Script.views.ScriptLoader({collection: this.scripts});
+
+      Backbone.trigger('notification', 'loading');
 
       this.scripts.fetch().done(function() {
         Backbone.history.start();
