@@ -8,6 +8,11 @@ body {
   font-family: Courier New, courier, fixed-width;
   font-size: 12pt;
   background-color: rgba(240,242,212, 0.4);
+
+  @media print {
+    margin: 0;
+  }
+
 }
 
 body.modal-open {
@@ -22,22 +27,44 @@ header {
   opacity: 0.25;
   font-size: 2em;
   font-weight: bold;
+
+  @media print {
+    display: none;
+  }
+
 }
 
 .typewriter {
   margin: 100px auto;
-  width: 595px;
-  -webkit-box-shadow: 0px -4px 20px rgba(50, 50, 50, 0.25);
+
+  @media print {
+    margin-left: 1.0in;
+    margin-right: 0.7in;
+    margin-top: 0.5in;
+    margin-bottom: 1in;
+  }
+
+  @media screen {
+    width: 595px;
+    -webkit-box-shadow: 0px -4px 20px rgba(50, 50, 50, 0.25);
     -moz-box-shadow:  0px -4px 20px rgba(50, 50, 50, 0.25);
     box-shadow:       0px -4px 20px rgba(50, 50, 50, 0.25);
+    padding: 100px;
+    
+  }
   min-height: 895px;
-  padding: 100px;
   background-color: white;
   outline: none;
 }
 
 
 .loading {
+
+  @media print {
+    display: none;
+  }
+
+
   background-color: rgba(240, 242, 212, 0.4);
   color: #999;
   position: fixed;
@@ -55,6 +82,12 @@ header {
 }
 
 .notifications {
+
+  @media print {
+    display: none;
+  }
+
+
   font-size: 14px;
   text-align: center;
   position: fixed;
@@ -79,6 +112,11 @@ p {
   margin-left: 200px;
   text-transform: uppercase;
   margin-bottom: 0px;
+
+  @media print {
+    margin-left: 1.5in;
+  }
+
 } 
 
 
@@ -86,6 +124,10 @@ p {
   margin-top: 0px;
   margin-left: 120px;
   margin-right: 160px;
+  @media print {
+    margin-left: 1.2in;
+    margin-right: 1in;
+  }
 }
 
 .parenthetical {
@@ -93,6 +135,12 @@ p {
   margin-bottom: 0px;
   margin-left: 150px;
   margin-right: 150px;
+
+  @media print {
+    margin-left: 1.4in;
+    max-width: 1.5in;
+  }
+
 }
 
 .parenthetical:after {
@@ -117,6 +165,5 @@ p {
 }
 
 .sceneheading {
-  font-weight: bold;
   text-transform: uppercase;
 }

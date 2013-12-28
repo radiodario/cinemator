@@ -66,7 +66,7 @@ define(['jquery', 'backbone', 'templates', 'localstorage'], function ($, Backbon
       var script = this.model.toJSON();
       var html = this.template({script: script});
       this.$el.html(html);
-      this.moveSelectionTo(this.el.lastChild);
+      this.moveSelectionToEnd(this.$('p').last().get(0));
     },
 
     events : {
