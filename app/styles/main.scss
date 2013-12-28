@@ -5,15 +5,34 @@
 @import "welcome";
 
 body {
-  font-family: Courier New, courier, fixed-width;
+  font-family: Courier, courier, fixed-width;
   font-size: 12pt;
   background-color: rgba(240,242,212, 0.4);
-
   @media print {
+    font-family: Courier, courier, fixed-width;
+    font-size: 11.5pt;
+
     margin: 0;
   }
 
 }
+
+
+@page {
+  size: letter;
+  margin-left: 1.5in;
+  margin-top: 0.85in;
+  margin-right: 1in;
+  margin-bottom: 0.5in;
+  counter-increment: page;
+  counter-reset: page 1;
+
+  @top-right {
+    content: "Page " counter(page); 
+    
+  }
+}
+
 
 body.modal-open {
     overflow: hidden;
@@ -34,23 +53,28 @@ header {
 
 }
 
+footer {
+  @media print {
+    display: none;
+  }
+}
+
 .typewriter {
   margin: 100px auto;
 
   @media print {
-    margin-left: 1.0in;
-    margin-right: 0.7in;
-    margin-top: 0.5in;
-    margin-bottom: 1in;
+    margin: 0;
   }
 
   @media screen {
-    width: 595px;
+    width: 610px;
     -webkit-box-shadow: 0px -4px 20px rgba(50, 50, 50, 0.25);
     -moz-box-shadow:  0px -4px 20px rgba(50, 50, 50, 0.25);
     box-shadow:       0px -4px 20px rgba(50, 50, 50, 0.25);
-    padding: 100px;
-    
+    padding-top:75px;
+    padding-left:125px;
+    padding-bottom:100px;
+    padding-right:80px;
   }
   min-height: 895px;
   background-color: white;
@@ -101,20 +125,37 @@ header {
 
 p {
   outline: none;
+  @media print {
+    -webkit-margin-before: 11.5pt;
+    -webkit-margin-after: 11.5pt;
+    -webkit-margin-start: 0px;
+    -webkit-margin-end: 0px;
+    -moz-margin-before: 11.5pt;
+    -moz-margin-after: 11.5pt;
+    -moz-margin-start: 0px;
+    -moz-margin-end: 0px;
+    margin-before: 11.5pt;
+    margin-after: 11.5pt;
+    margin-start: 0px;
+    margin-end: 0px;
+    line-height: 11.5pt;
+  }
 }
 
 .typewritter :last-child {
-  margin-bottom: 200px;
+  @media screen {
+    margin-bottom: 200px;
+  }
 }
 
 
 .character {
-  margin-left: 200px;
+  margin-left: 270px;
   text-transform: uppercase;
   margin-bottom: 0px;
 
   @media print {
-    margin-left: 1.5in;
+    margin-left: 2.6in;
   }
 
 } 
@@ -122,10 +163,10 @@ p {
 
 .dialog {
   margin-top: 0px;
-  margin-left: 120px;
-  margin-right: 160px;
+  margin-left: 150px;
+  margin-right: 110px;
   @media print {
-    margin-left: 1.2in;
+    margin-left: 1.5in;
     margin-right: 1in;
   }
 }
@@ -133,12 +174,12 @@ p {
 .parenthetical {
   margin-top: 0px;
   margin-bottom: 0px;
-  margin-left: 150px;
-  margin-right: 150px;
+  margin-left: 220px;
+  margin-right: 250px;
 
   @media print {
-    margin-left: 1.4in;
-    max-width: 1.5in;
+    margin-left: 2in;
+    margin-right: 2in;
   }
 
 }

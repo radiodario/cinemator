@@ -22,11 +22,11 @@ module.exports = function (grunt) {
         watch: {
             compass: {
                 files: ['<%= yeoman.app %>/styles/{,*/}*.{scss,sass}'],
-                tasks: ['compass:server', 'autoprefixer']
+                tasks: ['compass:server']
             },
             styles: {
                 files: ['<%= yeoman.app %>/styles/{,*/}*.css'],
-                tasks: ['copy:styles', 'autoprefixer']
+                tasks: ['copy:styles']
             },            
             jst: {
                 files: [
@@ -358,7 +358,7 @@ module.exports = function (grunt) {
             'createDefaultTemplate',
             'jst',
             'concurrent:server',
-            'autoprefixer',
+            // 'autoprefixer',
             'connect:livereload',
             'watch'
         ]);
@@ -369,7 +369,7 @@ module.exports = function (grunt) {
         'createDefaultTemplate',
         'jst',
         'concurrent:test',
-        'autoprefixer',
+        // 'autoprefixer',
         'connect:test',
         'mocha'
     ]);
@@ -380,7 +380,7 @@ module.exports = function (grunt) {
         'useminPrepare',
         'jst',
         'concurrent:dist',
-        'autoprefixer',
+        // 'autoprefixer',
         'requirejs',
         'concat',
         'cssmin',
