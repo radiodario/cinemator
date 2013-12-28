@@ -10,6 +10,7 @@ define(['jquery', 'backbone'], function ($, Backbone) {
       // stop all animations
       this.$el.stop(true, true)
       var pos = { 
+        position: 'fixed',
         top: 10, 
         left: window.innerWidth/2 - this.$el.width()/2
       };
@@ -22,6 +23,7 @@ define(['jquery', 'backbone'], function ($, Backbone) {
       if (message.hasOwnProperty('pos')) {
         this.$el.html(message.text)
         pos = message.pos;
+        pos.position ='absolute';
       }
 
       this.$el.css(pos).show().fadeOut(1500);
