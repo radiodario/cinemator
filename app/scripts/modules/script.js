@@ -137,6 +137,7 @@ define(['jquery', 'backbone', 'templates', 'localstorage'], function ($, Backbon
     // make this more elegant to handle different 
     // keyboards, etc.
     handleKeyboard: function(e) {
+      
       switch (e.keyCode) {
         case 9:
           this.handleTab(e);
@@ -174,17 +175,17 @@ define(['jquery', 'backbone', 'templates', 'localstorage'], function ($, Backbon
       e.preventDefault();
 
       // capture the selection
-      var s = document.getSelection();
+      var s = window.getSelection();
       // and look to see if we're at the end of the 
       // selection 
-      var atEOL = s.extentOffset == s.anchorNode.length;
+      var atEOL = s.anchorOffset == s.anchorNode.length;
 
       if (atEOL) {
         return this.addPart(e);
       }
 
       // otherwise go to the end of the line
-      s.modify('move', 'forward', 'line')
+      return s.modify('move', 'forward', 'line')
 
     },
 
@@ -192,10 +193,11 @@ define(['jquery', 'backbone', 'templates', 'localstorage'], function ($, Backbon
     handleDelete: function(e) {
       // get our current selected element, i.e where
       // the keyboard has the focus
-      var ce = this.getCurrentSelectionElement();
+      var s = window.getSelection();
+      
       // check if we have reached the end of the current
       // 'p' node, where the editor places us on 'div'
-      if (ce === this.el) {
+      if (s.anchorOffset === 0) {
         e.preventDefault();
         this.deletePart(e);
       }
@@ -224,7 +226,7 @@ define(['jquery', 'backbone', 'templates', 'localstorage'], function ($, Backbon
           // remove the part type
           part.classList.remove(partType);
           // and make it the next one in the list;
-          if (event.shiftKey) {
+          if (e.shiftKey) {
             // backwards if we have shift key on
             newPartType = scriptParts[(i - 1) >= 0 ? i - 1 : scriptParts.length-1 ]
           } else {
@@ -261,12 +263,17 @@ define(['jquery', 'backbone', 'templates', 'localstorage'], function ($, Backbon
       // add a new para with right class type
       var newPart = document.createElement('p');
       // we need to add this space otherwise we can't focus onto it
-      newPart.innerHTML = '&nbsp;';
+      newPart.innerHTML = '&nbsp;'
+      
       // this assumes the p only has one class
-      var currentNode = this.getCurrentSelectionElement()
+      var currentNode = this.getCurrentSelectionElement();
       var currentType = currentNode.className;
       var newPartType = nextParts[currentType];
 
+      // remove any br's from the end
+      // that firefox might have decided to add
+      currentNode.innerHTML = currentNode.innerHTML.replace(/<br>$/, '');
+      
       // give it the most useful next part
       newPart.classList.add(newPartType);
       // add it to the paper after the current element
@@ -298,34 +305,37 @@ define(['jquery', 'backbone', 'templates', 'localstorage'], function ($, Backbon
       // the anchor node is the current P
       var currentNode = window.getSelection().anchorNode;
       // get the previous guy
-      
       var ps = currentNode.previousSibling;
       if (ps === null) return;
       // check that we have a 'P' before otherwise don't remove
       // we got to the 'P'
-      if (ps.tagName == 'P') {
-        // so delete the original node
-        currentNode.remove();
-        // and send us to the previous sibling
-        this.moveSelectionToEnd(ps);
-      } else {
+      while (ps.tagName !== 'P') {
         ps.remove();
-        this.deletePart(e);
+        ps = currentNode.previousSibling;
+        // if there's no more previous siblings, stay.
+        if (ps === null) return;
       }
+
+      
+      // so delete the original node
+      currentNode.remove();
+      // and send us to the previous sibling
+      this.moveSelectionToEnd(ps);
+      
     },
 
 
     // element selection node
     // this might change if we use subviews?
     getCurrentSelectionElement: function() {
-      return document.getSelection().anchorNode.parentNode
+      return window.getSelection().anchorNode.parentNode
     },
 
       // moves the selection to an element and selects the whole thing
     moveSelectionTo: function (element) {
       // move the pointer to it
       var range = document.createRange(); //Create a range (a range is a like the selection but invisible)
-      range.selectNode(element);
+      range.selectNodeContents(element);
       var selection = window.getSelection();//get the selection object (allows you to change selection)
       selection.removeAllRanges();//remove any selections already made
       selection.addRange(range);//make the range you have just created the visible selection
@@ -335,7 +345,7 @@ define(['jquery', 'backbone', 'templates', 'localstorage'], function ($, Backbon
     moveSelectionToEnd: function (element) {
       // move the pointer to it
       var range = document.createRange(); //Create a range (a range is a like the selection but invisible)
-      range.selectNode(element);
+      range.selectNodeContents(element);
       range.collapse();
       var selection = window.getSelection();//get the selection object (allows you to change selection)
       selection.removeAllRanges();//remove any selections already made
