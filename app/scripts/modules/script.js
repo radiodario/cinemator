@@ -66,6 +66,7 @@ define(['jquery', 'backbone', 'templates', 'localstorage'], function ($, Backbon
       var script = this.model.toJSON();
       var html = this.template({script: script});
       this.$el.html(html);
+      this.moveSelectionTo(this.el.lastChild);
     },
 
     events : {
@@ -389,7 +390,7 @@ define(['jquery', 'backbone', 'templates', 'localstorage'], function ($, Backbon
     },
 
     makeNew: function() {
-      Backbone.history.navigate('', true);
+      Backbone.history.navigate('new', true);
     },
 
     closeLoader : function() {
