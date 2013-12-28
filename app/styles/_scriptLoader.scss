@@ -1,5 +1,10 @@
 
 .scriptLoader {
+
+  @media print {
+    display: none;
+  }
+
   box-sizing : border-box;
 
   min-width: 550px;
