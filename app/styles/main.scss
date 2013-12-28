@@ -111,10 +111,11 @@ footer {
     display: none;
   }
 
+  position: absolute;
 
   font-size: 14px;
   text-align: center;
-  position: fixed;
+  
   width: 140px;
   padding: 5px;
   background-color: rgba(240, 242, 242, 0.8);
