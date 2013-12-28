@@ -1,9 +1,16 @@
 @import "compass/css3/border-radius";
 
+
+@import "scriptLoader";
+
 body {
   font-family: Courier New, courier, fixed-width;
   font-size: 12pt;
   background-color: rgba(240,242,212, 0.4);
+}
+
+body.modal-open {
+    overflow: hidden;
 }
 
 header {

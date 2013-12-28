@@ -1,0 +1,94 @@
+
+.scriptLoader {
+  box-sizing : border-box;
+
+  min-width: 550px;
+
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  margin: 0px 200px;
+  border: none;
+  background-color: none;
+
+  &.open {
+    background-color: rgba(240,242,212, 0.8);
+    border: 1px solid #eee;
+
+    a.toolbar {
+      display: none;
+    }
+
+  }
+
+  a.toolbar {
+    float: right;
+    background-color: rgba(240,242,212, 0.3);
+    border: 1px solid #eee;
+    padding: 10px 20px;
+    cursor: pointer;
+    opacity: 0.2;
+    &:hover{
+      background-color: rgba(240,242,212, 0.8);
+      opacity: 1;
+    }
+
+  }
+
+
+  h3 {
+    padding: 5px 20px;
+
+    a.close {
+      float: right;
+      cursor: pointer;
+      color: #999;
+      padding: 20px;
+      margin-top: -20px;
+
+      &:hover {
+        color: #333;
+      }
+
+    }
+
+
+
+  }
+
+
+  ul {
+    background-color: rgba(240,242,212, 0.8);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    max-height: 300px;
+    overflow-y: auto;
+    border-top: 1px solid #eee;
+    li {
+      padding: 5px 20px;
+      height: 30px;
+      line-height: 30px;
+      cursor: pointer;
+      &:hover {
+        background-color: rgba(140,142,142, 1);
+        color: white;
+      }
+
+      a.delete {
+        float: right;
+        padding: 0 25px;
+
+        &:hover {
+          background-color: red;
+        }
+
+      }
+
+    }
+
+  }
+
+
+}

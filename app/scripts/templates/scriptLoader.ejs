@@ -1,0 +1,9 @@
+<h3>Load a Script: <a class="close">×</a></h3>
+<ul class="scriptList">
+  <% for(var i=0; i < scripts.length; i++) {%>
+   <% var script = scripts[i] %>
+   <li id="<%= script.id %>"><%= script.id %><a class="delete">×</a></li>
+  <% } %>
+</ul>
+<a class="toolbar load">load</a>
+<a class="toolbar new">new</a>

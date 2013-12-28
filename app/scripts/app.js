@@ -10,11 +10,13 @@ define(['backbone', 'modules/script', 'modules/notification', 'router'], functio
 
       this.router = new Router({collection: this.scripts});
 
+
       this.notification = new Notification();
+      this.scriptLoader = new Script.views.ScriptLoader({collection: this.scripts});
 
       this.scripts.fetch().done(function() {
         Backbone.history.start();
-        Backbone.trigger('notification', 'Welcome to cinemator!')
+        Backbone.trigger('notification', 'Welcome to cinemator!');
       });
 
       Backbone.on('savedModel', this.setUrl, this);
