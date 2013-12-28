@@ -14,8 +14,16 @@ define(['jquery', 'backbone', 'modules/script'], function ($, Backbone, Script) 
     },
 
     welcome : function() {
-      $('.welcome').fadeIn(200);
-      $('body').addClass('modal-open');
+
+      // check if you've been here before
+      if (!localStorage['cinemator.hereBefore']) {
+        $('.welcome').fadeIn(200);
+        $('body').addClass('modal-open');
+        localStorage['cinemator.hereBefore'] = true;
+      } else {
+        // if you've been here before, go to a new one
+        this.navigate('#new', true);
+      }
     },
 
     newScript : function() {
