@@ -27,10 +27,11 @@ body {
   counter-increment: page;
   counter-reset: page 1;
 
-  @top-right {
-    content: "Page " counter(page); 
-    
-  }
+}
+
+@top-center {
+  content: "Page " counter(page); 
+  
 }
 
 
@@ -154,8 +155,9 @@ p {
   margin-left: 270px;
   text-transform: uppercase;
   margin-bottom: 0px;
-
   @media print {
+    page-break-after: avoid;
+    page-break-inside: avoid;
     margin-left: 2.6in;
   }
 
@@ -167,6 +169,8 @@ p {
   margin-left: 150px;
   margin-right: 110px;
   @media print {
+    page-break-before: avoid;  
+    page-break-inside: avoid;
     margin-left: 1.5in;
     margin-right: 1in;
   }
