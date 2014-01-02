@@ -118,10 +118,11 @@ define(['jquery', 'backbone', 'templates', 'backfire'], function ($, Backbone, J
         // keep counts on character usage, which we'll
         // use to suggest things
         if ((part.type === 'character') && (part.text !== '&nbsp;')) {
-          if (data.characters.hasOwnProperty(part.text)) {
-            data.characters[part.text]++;
+          var cname = part.text.toLowerCase();
+          if (data.characters.hasOwnProperty(cname)) {
+            data.characters[cname]++;
           } else {
-            data.characters[part.text] = 1;
+            data.characters[cname] = 1;
           }
         }
 
@@ -348,7 +349,7 @@ define(['jquery', 'backbone', 'templates', 'backfire'], function ($, Backbone, J
         var typed = cs.innerHTML;
         var characters = this.model.get('characters');
         for (var character in characters) {
-          if (character.indexOf(typed) == 0) {
+          if (character.indexOf(typed.toLowerCase()) == 0) {
             // we have to notify somehow the user that this is the 
             // new part type
             // and get out of the loop
