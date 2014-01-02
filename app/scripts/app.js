@@ -15,10 +15,12 @@ define(['backbone', 'modules/script', 'modules/notification', 'router'], functio
 
       Backbone.trigger('notification', 'loading');
 
-      this.scripts.fetch().done(function() {
+
+      this.scripts.on('sync', function() {
         Backbone.history.start();
       });
 
+      this.scripts.fetch()
       Backbone.on('savedModel', this.setUrl, this);
 
 
