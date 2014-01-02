@@ -17,16 +17,30 @@ define(['jquery', 'backbone'], function ($, Backbone) {
       if (typeof message === "string") {
         this.$el
           .html(message)
-        
+      } else {
+        this.$el.html(message.text)
       }
 
       if (message.hasOwnProperty('pos')) {
-        this.$el.html(message.text)
         pos = message.pos;
         pos.position ='absolute';
       }
 
-      this.$el.css(pos).show().fadeOut(1500);
+      message.delay = message.delay || 0
+
+      this.$el.css(pos).show()
+      // dont hide if delay is -1
+      if (message.delay < 0) {
+
+      } else {
+        this.$el.delay(message.delay).fadeOut(1500);
+      }
+
+
+    },
+
+    hide : function() {
+      this.$el.fadeOut(1500);
 
     }
 

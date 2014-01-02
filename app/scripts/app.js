@@ -13,10 +13,11 @@ define(['backbone', 'modules/script', 'modules/notification', 'router'], functio
       this.notification = new Notification();
       this.scriptLoader = new Script.views.ScriptLoader({collection: this.scripts});
 
-      Backbone.trigger('notification', 'loading');
+      Backbone.trigger('notification', { text:'loading...', delay: -1});
 
 
       this.scripts.on('sync', function() {
+        
         Backbone.history.start();
       });
 

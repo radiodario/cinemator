@@ -29,7 +29,7 @@ define(['jquery', 'backbone', 'modules/script'], function ($, Backbone, Script) 
 
     newScript : function() {
 
-      Backbone.trigger('notification', 'loading');
+      Backbone.trigger('notification', 'Loaded!');
 
       $('.welcome').fadeOut(500);
       $('body').removeClass('modal-open');
@@ -40,7 +40,7 @@ define(['jquery', 'backbone', 'modules/script'], function ($, Backbone, Script) 
     },
 
     loadScript: function(id) {
-      Backbone.trigger('notification', 'loading');
+      Backbone.trigger('notification', 'Loaded!');
       
       var script = this.collection.findWhere({id: id});
       var view = new Script.views.Typewriter({model: script});
