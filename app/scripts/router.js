@@ -40,9 +40,8 @@ define(['jquery', 'backbone', 'modules/script'], function ($, Backbone, Script) 
     },
 
     loadScript: function(id) {
-
       Backbone.trigger('notification', 'loading');
-
+      
       var script = this.collection.findWhere({id: id});
       var view = new Script.views.Typewriter({model: script});
       view.render();

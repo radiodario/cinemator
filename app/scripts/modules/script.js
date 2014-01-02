@@ -1,4 +1,4 @@
-define(['jquery', 'backbone', 'templates', 'localstorage'], function ($, Backbone, JST) {
+define(['jquery', 'backbone', 'templates', 'backfire'], function ($, Backbone, JST) {
 
   var Script = {};
 
@@ -37,9 +37,10 @@ define(['jquery', 'backbone', 'templates', 'localstorage'], function ($, Backbon
       }],
       characters: {}
     },
-
+    // firebase: "https://cinemator.firebaseio.com/scripts",
+    
     initialize : function() {
-      this.on('sync', this.notify, this);
+      this.on('change', this.notify, this);
     },
 
     notify : function() {
@@ -49,10 +50,11 @@ define(['jquery', 'backbone', 'templates', 'localstorage'], function ($, Backbon
   });
 
   // The collection
-  Script.collection = Backbone.Collection.extend({
+  Script.collection = Backbone.Firebase.Collection.extend({
     model: Script.model,
-    url: '/api/scripts',
-    localStorage: new Backbone.LocalStorage('cinemator')
+    // url: '/api/scripts',
+    firebase: "https://cinemator.firebaseio.com/scripts"  
+    // localStorage: new Backbone.LocalStorage('cinemator')
   })
 
 
@@ -61,6 +63,10 @@ define(['jquery', 'backbone', 'templates', 'localstorage'], function ($, Backbon
   Script.views.Typewriter = Backbone.View.extend({
     template: JST['app/scripts/templates/script.ejs'],
     el: 'div.typewriter',
+
+    initialize: function() {
+      this.model.on('change', this.render, this)
+    },
 
     render : function() {
       var script = this.model.toJSON();
@@ -126,7 +132,7 @@ define(['jquery', 'backbone', 'templates', 'localstorage'], function ($, Backbon
       this.model.set(data);
 
       // save the model
-      this.model.save()
+      // this.model.save()
 
       Backbone.trigger('savedModel', this.model.id);
 
@@ -138,6 +144,8 @@ define(['jquery', 'backbone', 'templates', 'localstorage'], function ($, Backbon
     // make this more elegant to handle different 
     // keyboards, etc.
     handleKeyboard: function(e) {
+
+      clearTimeout(this.timeout);
       
       switch (e.keyCode) {
         case 9:
@@ -153,9 +161,8 @@ define(['jquery', 'backbone', 'templates', 'localstorage'], function ($, Backbon
           this.checkCharacter(e);
           break;
       }
-
-      clearTimeout(this.timeout);
-      this.timeout = setTimeout(this.saveScript.bind(this), 2000);
+      
+      this.timeout = setTimeout(this.saveScript.bind(this), 1500);
 
     },
 
